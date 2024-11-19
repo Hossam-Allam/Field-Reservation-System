@@ -5,6 +5,9 @@
     font-style: normal;
 }
 
+:root {
+    font-family: Arial, Helvetica, sans-serif;
+}
 
 body {
     margin: 0;
@@ -31,10 +34,14 @@ h2 {
     color: #596D48;
 }
 
+i {
+    color: #596D48;
+}
+
 .hook {
     margin-left: 150px;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: large;
+    font-size: larger;
     font-weight: bold;
 }
 
@@ -42,14 +49,14 @@ h2 {
     padding-top: 100px;
 }
 
-form {
+.shadow {
     background-color: rgb(246, 245, 245);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 -4px 8px rgba(0, 0, 0, 0.05);
-
 }
 
 .whole {
     display: flex;
+
 }
 
 .left-form,
@@ -63,12 +70,58 @@ fieldset {
 }
 
 label {
-    margin-left: 100px;
+    margin-left: 150px;
 }
 
 input {
-    width: 150px;
+    width: 250px;
+    padding: 5px;
+    height: 25px;
+    border-radius: 5px;
     padding: 0;
-    margin-right: 150px;
+    margin-left: 150px;
+    margin-bottom: 20px;
     box-sizing: border-box;
+}
+
+button {
+    width: 200px;
+    padding: 15px;
+    border-radius: 5px;
+    margin-left: 150px;
+    margin-top: 20px;
+    background-color: #596D48;
+    color: white;
+
+    font-weight: bolder;
+}
+
+.final {
+    margin-bottom: 35px;
+}
+
+.login {
+    margin-left: 150px;
+    font-weight: bold;
+}
+
+span {
+    color: #596D48;
+    cursor: pointer;
+}
+
+input:user-invalid {
+    border-color: red;
+}
+
+input:user-valid {
+    border-color: green;
+}
+
+input:invalid {
+    border-color: red;
+}
+
+button:hover {
+    cursor: pointer;
 }
