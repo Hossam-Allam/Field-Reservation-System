@@ -65,6 +65,18 @@
             </form>
         </div>
     </div>
+    <script>
+        document.querySelector("form").addEventListener("submit", function (e) {
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirm").value;
+            const confirmField = document.getElementById("confirm");
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                confirmField.style.border = "2px solid red";
+                alert("Passwords do not match!");
+            }
+        });
+    </script>
 
 </body>
 

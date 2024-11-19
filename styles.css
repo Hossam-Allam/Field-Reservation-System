@@ -143,15 +143,15 @@ span {
 }
 
 input:user-invalid {
-    border-color: red;
+    border: 2px solid red
 }
 
 input:user-valid {
-    border-color: green;
+    border: 2px solid green;
 }
 
 input:invalid {
-    border-color: red;
+    border: 2px solid red
 }
 
 button:hover {
