@@ -22,6 +22,38 @@ body {
     display: flex;
 }
 
+.left {
+    position: relative;
+}
+
+.odin {
+    position: absolute;
+    height: 150px;
+    width: 100%;
+    left: 0px;
+    top: 100px;
+    background-color: rgba(0, 0, 0, 0.5);
+
+}
+
+.odimg {
+    position: relative;
+    height: 150px;
+    width: 100px;
+    top: 0px;
+    left: 50px;
+}
+
+.otext {
+    position: absolute;
+    top: -40px;
+    left: 200px;
+    font-family: 'norse';
+    font-size: 80px;
+    font-weight: bold;
+    color: white;
+}
+
 .right {
     width: 100%;
     background-color: rgb(240, 238, 238);
