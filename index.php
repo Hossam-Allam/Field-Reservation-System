@@ -21,67 +21,77 @@
         <div class="right">
             <div class="top-right">
                 <p class="hook one">
-                    Welcome to Opti-Sport. Your all-in-one sports reservation system!<br> To help you realize
-                    your deepest dreams.<br>
+                    Welcome to Opti-Sport. Your all-in-one sports reservation system!<br>
+                    To help you realize your deepest dreams.<br>
                     Sign up now to get started!
                 </p>
                 <p class="hook">You <i>know</i> you want to!</p>
             </div>
 
-            <?php
-            // Placeholder for form handling logic
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $firstName = $_POST['first_name'] ?? '';
-                $lastName = $_POST['last_name'] ?? '';
-                $email = $_POST['email'] ?? '';
-                $phone = $_POST['phone'] ?? '';
-                $password = $_POST['password'] ?? '';
-                $confirmPassword = $_POST['confirm'] ?? '';
+            <div id="form-container">
+                <!-- Default Form (Sign-Up) -->
+                <form id="signup-form" action="" method="post">
+                    <div class="shadow">
+                        <h2>Let's do this</h2>
+                        <div class="whole">
+                            <div class="left-form">
+                                <label for="first_name">First Name</label>
+                                <input type="text" id="first_name" placeholder="EX: Hossam" name="first_name">
 
-                // Basic validation example
-                if ($password !== $confirmPassword) {
-                    echo '<p style="color: red;">Passwords do not match!</p>';
-                } else {
-                    // Process the form (e.g., save to database, send email, etc.)
-                    echo '<p style="color: green;">Form submitted successfully!</p>';
-                }
-            }
-            ?>
+                                <label for="email">Email</label>
+                                <input type="email" id="email" placeholder="EX: joe@gmail.com" name="email">
 
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-                <div class="shadow">
-                    <h2>Let's do this</h2>
-                    <div class="whole">
-                        <div class="left-form">
-                            <label for="first_name">First Name</label>
-                            <input type="text" id="first_name" placeholder="EX: Hossam" name="first_name" required>
+                                <label for="password">Password</label>
+                                <input type="password" id="password" placeholder="Alphanumeric" name="password">
+                            </div>
 
-                            <label for="email">Email</label>
-                            <input type="email" id="email" placeholder="EX: joe@gmail.com" name="email" required>
+                            <div class="right-form">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" id="last_name" placeholder="EX: Allam" name="last_name">
 
-                            <label for="password">Password</label>
-                            <input type="password" id="password" placeholder="Alphanumeric" name="password" required>
-                        </div>
+                                <label for="phone">Phone Number</label>
+                                <input type="number" id="phone" placeholder="0552423422" name="phone">
 
-                        <div class="right-form">
-                            <label for="last_name">Last Name</label>
-                            <input type="text" id="last_name" placeholder="EX: Allam" name="last_name" required>
-
-                            <label for="phone">Phone Number</label>
-                            <input type="number" id="phone" placeholder="0552423422" name="phone" required>
-
-                            <label for="confirm">Confirm Password</label>
-                            <input class="final" type="password" id="confirm" name="confirm" required>
+                                <label for="confirm">Confirm Password</label>
+                                <input class="final" type="password" id="confirm" name="confirm">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <button type="submit">Create Account</button>
-                <p class="login">Already have an account? <span>Log in</span></p>
-            </form>
+                    <button type="submit">Create Account</button>
+                    <p class="login">Already have an account? <span id="show-login">Log in</span></p>
+                </form>
+            </div>
         </div>
     </div>
 
     <script>
+        document.getElementById('show-login').addEventListener('click', function () {
+            const formContainer = document.getElementById('form-container');
+
+            // Replace the current form with the login form
+            formContainer.innerHTML = `
+                <form id="login-form" action="" method="post">
+                    <div class="shadow">
+                        <h2>Welcome Back</h2>
+                        <div>
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="EX: joe@gmail.com" name="email">
+
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="Your Password" name="password">
+                        </div>
+                    </div>
+                    <button type="submit">Log In</button>
+                    <p class="login">Don't have an account? <span id="show-signup">Sign Up</span></p>
+                </form>
+            `;
+
+            // Add event listener to the "Sign Up" button in the login form
+            document.getElementById('show-signup').addEventListener('click', function () {
+                location.reload(); // Reload to show the sign-up form again
+            });
+        });
+
         document.querySelector("form").addEventListener("submit", function(e) {
             const password = document.getElementById("password").value;
             const confirmPassword = document.getElementById("confirm").value;
@@ -93,7 +103,8 @@
             }
         });
     </script>
-
 </body>
 
 </html>
+
+
