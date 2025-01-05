@@ -73,10 +73,10 @@
                 <form id="login-form" action="" method="post">
                     <div class="shadow">
                         <h2>Welcome Back</h2>
-                        <div>
+                        <div id="login-inputs">
                             <label for="email">Email</label>
                             <input type="email" id="email" placeholder="EX: joe@gmail.com" name="email">
-
+                        
                             <label for="password">Password</label>
                             <input type="password" id="password" placeholder="Your Password" name="password">
                         </div>
