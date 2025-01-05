@@ -29,7 +29,7 @@
             </div>
 
             <?php
-            // Placeholder for form handling logic
+            
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $firstName = $_POST['first_name'] ?? '';
                 $lastName = $_POST['last_name'] ?? '';
@@ -38,11 +38,11 @@
                 $password = $_POST['password'] ?? '';
                 $confirmPassword = $_POST['confirm'] ?? '';
 
-                // Basic validation example
+                
                 if ($password !== $confirmPassword) {
                     echo '<p style="color: red;">Passwords do not match!</p>';
                 } else {
-                    // Process the form (e.g., save to database, send email, etc.)
+                    
                     echo '<p style="color: green;">Form submitted successfully!</p>';
                 }
             }
