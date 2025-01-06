@@ -29,20 +29,56 @@
             </div>
 
             <?php
-            // Placeholder for form handling logic
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $firstName = $_POST['first_name'] ?? '';
-                $lastName = $_POST['last_name'] ?? '';
-                $email = $_POST['email'] ?? '';
-                $phone = $_POST['phone'] ?? '';
-                $password = $_POST['password'] ?? '';
-                $confirmPassword = $_POST['confirm'] ?? '';
+                // Include the database connection
+                require_once 'connect.php';
 
-                // Basic validation example
-                if ($password !== $confirmPassword) {
-                    echo '<p style="color: red;">Passwords do not match!</p>';
+
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    // Collect form inputs
+                    $firstName = $_POST['first_name'] ?? '';
+                    $lastName = $_POST['last_name'] ?? '';
+                    $email = $_POST['email'] ?? '';
+                    $phone = $_POST['phone'] ?? '';
+                    $password = $_POST['password'] ?? '';
+                    $confirmPassword = $_POST['confirm'] ?? '';
+
+                    // Validation
+                    $errors = [];
+                    if (empty($firstName) || empty($lastName) || empty($email) || empty($phone) || empty($password)) {
+                        $errors[] = "All fields are required.";
+                    }
+                    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        $errors[] = "Invalid email format.";
+                    }
+                    if (!is_numeric($phone)) {
+                        $errors[] = "Phone number must be numeric.";
+                    }
+                    if ($password !== $confirmPassword) {
+                        $errors[] = "Passwords do not match.";
+                    }
+
+                    if (empty($errors)) {
+                        // Hash the password
+                        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+                        // Insert into database
+                        $stmt = $conn->prepare("INSERT INTO customers (name, surname, phone, email, password) VALUES (?, ?, ?, ?, ?)");
+                        $stmt->bind_param("sssss", $firstName, $lastName, $phone, $email, $hashedPassword);
+
+                        if ($stmt->execute()) {
+                            echo '<p style="color: green;">Account created successfully!</p>';
+                        } else {
+                            echo '<p style="color: red;">Error: ' . $stmt->error . '</p>';
+                        }
+
+                        $stmt->close();
+                    } else {
+                        // Display errors
+                        foreach ($errors as $error) {
+                            echo '<p style="color: red;">' . htmlspecialchars($error) . '</p>';
+                        }
+                    }
                 }
-            }
             ?>
 
             <div id="form-container">
