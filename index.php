@@ -28,9 +28,26 @@
                 <p class="hook">You <i>know</i> you want to!</p>
             </div>
 
+            <?php
+            // Placeholder for form handling logic
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $firstName = $_POST['first_name'] ?? '';
+                $lastName = $_POST['last_name'] ?? '';
+                $email = $_POST['email'] ?? '';
+                $phone = $_POST['phone'] ?? '';
+                $password = $_POST['password'] ?? '';
+                $confirmPassword = $_POST['confirm'] ?? '';
+
+                // Basic validation example
+                if ($password !== $confirmPassword) {
+                    echo '<p style="color: red;">Passwords do not match!</p>';
+                }
+            }
+            ?>
+
             <div id="form-container">
                 <!-- Default Form (Sign-Up) -->
-                <form id="signup-form" action="" method="post">
+                <form id="signup-form" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
                     <div class="shadow">
                         <h2>Let's do this</h2>
                         <div class="whole">
