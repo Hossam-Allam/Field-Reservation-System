@@ -29,6 +29,7 @@
             </div>
 
             <?php
+                session_start();
                 // Include the database connection
                 require_once 'connect.php';
 
@@ -51,7 +52,9 @@
                                 $stmt->fetch();
 
                                 if (password_verify($password, $hashedPassword)) {
-                                    echo '<script>alert("Login successful!");</script>';
+                                    $_SESSION['user_email'] = $email;
+                                    header("Location: homepage.php");
+                                    exit();
                                 } else {
                                     echo '<script>alert("Invalid credentials. Please try again.");</script>';
                                 }
