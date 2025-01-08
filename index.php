@@ -32,58 +32,88 @@
                 // Include the database connection
                 require_once 'connect.php';
 
-
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    // Collect form inputs
-                    $firstName = $_POST['first_name'] ?? '';
-                    $lastName = $_POST['last_name'] ?? '';
-                    $email = $_POST['email'] ?? '';
-                    $phone = $_POST['phone'] ?? '';
-                    $password = $_POST['password'] ?? '';
-                    $confirmPassword = $_POST['confirm'] ?? '';
+                    $action = $_POST['action'] ?? '';
 
-                    // Validation
-                    $errors = [];
-                    if (empty($firstName) || empty($lastName) || empty($email) || empty($phone) || empty($password)) {
-                        $errors[] = "All fields are required.";
-                    }
-                    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                        $errors[] = "Invalid email format.";
-                    }
-                    if (!is_numeric($phone)) {
-                        $errors[] = "Phone number must be numeric.";
-                    }
-                    if ($password !== $confirmPassword) {
-                        $errors[] = "Passwords do not match.";
-                    }
+                    // Handle login
+                    if ($action === 'login' && isset($_POST['email'], $_POST['password'])) {
+                        $email = $_POST['email'];
+                        $password = $_POST['password'];
 
-                    if (empty($errors)) {
-                        // Hash the password
-                        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+                        if (!empty($email) && !empty($password)) {
+                            $stmt = $conn->prepare("SELECT password FROM customers WHERE email = ?");
+                            $stmt->bind_param("s", $email);
+                            $stmt->execute();
+                            $stmt->store_result();
 
-                        // Insert into database
-                        $stmt = $conn->prepare("INSERT INTO customers (name, surname, phone, email, password) VALUES (?, ?, ?, ?, ?)");
-                        $stmt->bind_param("sssss", $firstName, $lastName, $phone, $email, $hashedPassword);
+                            if ($stmt->num_rows > 0) {
+                                $stmt->bind_result($hashedPassword);
+                                $stmt->fetch();
 
-                        if ($stmt->execute()) {
-                            echo '<p style="color: green;">Account created successfully!</p>';
+                                if (password_verify($password, $hashedPassword)) {
+                                    echo '<script>alert("Login successful!");</script>';
+                                } else {
+                                    echo '<script>alert("Invalid credentials. Please try again.");</script>';
+                                }
+                            } else {
+                                echo '<script>alert("No account found with this email.");</script>';
+                            }
+
+                            $stmt->close();
                         } else {
-                            echo '<p style="color: red;">Error: ' . $stmt->error . '</p>';
+                            echo '<script>alert("Both fields are required.");</script>';
+                        }
+                    }
+
+                    // Handle signup
+                    else if ($action === 'signup') {
+                        $firstName = $_POST['first_name'] ?? '';
+                        $lastName = $_POST['last_name'] ?? '';
+                        $email = $_POST['email'] ?? '';
+                        $phone = $_POST['phone'] ?? '';
+                        $password = $_POST['password'] ?? '';
+                        $confirmPassword = $_POST['confirm'] ?? '';
+
+                        $errors = [];
+                        if (empty($firstName) || empty($lastName) || empty($email) || empty($phone) || empty($password)) {
+                            $errors[] = "All fields are required.";
+                        }
+                        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                            $errors[] = "Invalid email format.";
+                        }
+                        if (!is_numeric($phone)) {
+                            $errors[] = "Phone number must be numeric.";
+                        }
+                        if ($password !== $confirmPassword) {
+                            $errors[] = "Passwords do not match.";
                         }
 
-                        $stmt->close();
-                    } else {
-                        // Display errors
-                        foreach ($errors as $error) {
-                            echo '<p style="color: red;">' . htmlspecialchars($error) . '</p>';
+                        if (empty($errors)) {
+                            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+                            $stmt = $conn->prepare("INSERT INTO customers (name, surname, phone, email, password) VALUES (?, ?, ?, ?, ?)");
+                            $stmt->bind_param("sssss", $firstName, $lastName, $phone, $email, $hashedPassword);
+
+                            if ($stmt->execute()) {
+                                echo '<p style="color: green;">Account created successfully!</p>';
+                            } else {
+                                echo '<p style="color: red;">Error: ' . $stmt->error . '</p>';
+                            }
+
+                            $stmt->close();
+                        } else {
+                            foreach ($errors as $error) {
+                                echo '<p style="color: red;">' . htmlspecialchars($error) . '</p>';
+                            }
                         }
                     }
                 }
+
             ?>
 
             <div id="form-container">
                 <!-- Default Form (Sign-Up) -->
                 <form id="signup-form" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+                    <input type="hidden" name="action" value="signup">
                     <div class="shadow">
                         <h2>Let's do this</h2>
                         <div class="whole">
@@ -124,19 +154,21 @@
             // Replace the current form with the login form
             formContainer.innerHTML = `
                 <form id="login-form" action="" method="post">
+                    <input type="hidden" name="action" value="login">
                     <div class="shadow">
                         <h2>Welcome Back</h2>
                         <div id="login-inputs">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" placeholder="EX: joe@gmail.com" name="email">
+                            <label for="login-email">Email</label>
+                            <input type="email" id="login-email" placeholder="EX: joe@gmail.com" name="email">
                         
-                            <label for="password">Password</label>
-                            <input type="password" id="password" placeholder="Your Password" name="password">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" placeholder="Your Password" name="password">
                         </div>
                     </div>
                     <button type="submit">Log In</button>
                     <p class="login">Don't have an account? <span id="show-signup">Sign Up</span></p>
                 </form>
+
             `;
 
             // Add event listener to the "Sign Up" button in the login form
