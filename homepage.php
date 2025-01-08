@@ -1,4 +1,7 @@
 <?php
+// Start session to manage user login state
+session_start();
+
 // Database connection
 $host = '127.0.0.1'; // Replace with your database host
 $dbname = 'fieldreserva'; // Replace with your database name
@@ -17,6 +20,10 @@ $query = "SELECT * FROM fields WHERE availability = 1"; // Show only available f
 $stmt = $pdo->prepare($query);
 $stmt->execute();
 $fields = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Check if user is logged in
+$is_logged_in = isset($_SESSION['user']);
+$user_name = $is_logged_in ? htmlspecialchars($_SESSION['user']['name']) : null;
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +32,7 @@ $fields = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Field Reservation</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Add your CSS file here -->
+    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -43,6 +50,25 @@ $fields = $stmt->fetchAll(PDO::FETCH_ASSOC);
             padding: 10px 0;
             text-align: center;
             color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+        header img {
+            height: 50px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        header nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+        header nav a:hover {
+            text-decoration: underline;
         }
         footer {
             background-color: #007bff;
@@ -93,13 +119,20 @@ $fields = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
     <header>
-        <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
-            <!-- Display Logo -->
-            <img src="images/logo.jpg" alt="Optiserve Logo" style="width: 80px; height: auto;"> <!-- Increased logo size -->
-            <!-- Group Name -->
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <img src="images/logo.jpg" alt="Optiserve Logo" style="width: 80px; height: auto;">
             <h1>Optiserve - Field Reservation</h1>
         </div>
-        <p>Contact us at: <a href="mailto:info@optiserve.com" style="color: white;">info@optiserve.com</a></p>
+        <nav>
+            <?php if ($is_logged_in): ?>
+                <span>Welcome, <?php echo $user_name; ?></span>
+                <a href="profile.php">Profile</a>
+                <a href="logout.php">Sign Out</a>
+            <?php else: ?>
+                <a href="signin.php">Sign In</a>
+                <a href="signup.php">Sign Up</a>
+            <?php endif; ?>
+        </nav>
     </header>
 
     <div class="container">
@@ -108,7 +141,6 @@ $fields = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="field-list">
                 <?php foreach ($fields as $field): ?>
                     <div class="field-item">
-                        <!-- Display image for each field -->
                         <img src="<?php echo htmlspecialchars($field['image_path']); ?>" alt="Field Image" class="field-image">
                         <h3><?php echo htmlspecialchars($field['type']); ?></h3>
                         <p>Fees: <?php echo htmlspecialchars($field['fees']); ?> TL</p>
