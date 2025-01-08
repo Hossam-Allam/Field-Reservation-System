@@ -3,27 +3,24 @@
 session_start();
 
 // Database connection
-$host = '127.0.0.1'; // Replace with your database host
-$dbname = 'fieldreserva'; // Replace with your database name
-$username = 'root'; // Replace with your database username
-$password = ''; // Replace with your database password
+require_once 'connect.php';
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Database connection failed: " . $e->getMessage());
-}
+// Check if user is logged in
+$is_logged_in = isset($_SESSION['user_email']);
+$user_email = $is_logged_in ? htmlspecialchars($_SESSION['user_email']) : null;
 
 // Fetch fields from the database
 $query = "SELECT * FROM fields WHERE availability = 1"; // Show only available fields
-$stmt = $pdo->prepare($query);
-$stmt->execute();
-$fields = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$result = $conn->query($query);
 
-// Check if user is logged in
-$is_logged_in = isset($_SESSION['user']);
-$user_name = $is_logged_in ? htmlspecialchars($_SESSION['user']['name']) : null;
+if ($result === false) {
+    die("Database query failed: " . $conn->error);
+}
+
+$fields = [];
+while ($row = $result->fetch_assoc()) {
+    $fields[] = $row;
+}
 ?>
 
 <!DOCTYPE html>
@@ -125,7 +122,7 @@ $user_name = $is_logged_in ? htmlspecialchars($_SESSION['user']['name']) : null;
         </div>
         <nav>
             <?php if ($is_logged_in): ?>
-                <span>Welcome, <?php echo $user_name; ?></span>
+                <span>Welcome, <?php echo $user_email; ?></span>
                 <a href="profile.php">Profile</a>
                 <a href="logout.php">Sign Out</a>
             <?php else: ?>
@@ -160,3 +157,4 @@ $user_name = $is_logged_in ? htmlspecialchars($_SESSION['user']['name']) : null;
     </footer>
 </body>
 </html>
+
