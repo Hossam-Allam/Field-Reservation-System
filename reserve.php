@@ -85,7 +85,12 @@
 </head>
 <body>
 
-    <?php include('header.php'); ?>
+    
+
+    <?php 
+        
+        include('header.php'); 
+    ?>
 
     <div class="container">
         <h1>Reservation for <span><?php echo htmlspecialchars($field['type']); ?> </span> Field </h1>

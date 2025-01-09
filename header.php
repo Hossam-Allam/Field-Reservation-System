@@ -4,8 +4,11 @@
         <h1><i>Optiserve</i> - Field Reservation</h1>
     </div>
     <nav>
-        <?php if ($is_logged_in): ?>
-            <span>Welcome, <?php echo $user_email; ?></span>
+        <?php
+            session_start();
+            if (isset($user_email) && $is_logged_in): 
+        ?>
+        <span id="white">Welcome, <?php echo htmlspecialchars($user_email); ?></span>
             <a href="profile.php">Profile</a>
             <a href="logout.php">Sign Out</a>
         <?php else: ?>

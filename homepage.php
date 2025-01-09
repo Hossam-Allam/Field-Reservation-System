@@ -1,26 +1,26 @@
 <?php
 
-session_start();
+    session_start();
 
-// Database connection
-require_once 'connect.php';
+    // Database connection
+    require_once 'connect.php';
 
-// Check if user is logged in
-$is_logged_in = isset($_SESSION['user_email']);
-$user_email = $is_logged_in ? htmlspecialchars($_SESSION['user_email']) : null;
+    // Check if user is logged in
+    $is_logged_in = isset($_SESSION['user_email']);
+    $user_email = $is_logged_in ? htmlspecialchars($_SESSION['user_email']) : null;
 
-// Fetch fields from the database
-$query = "SELECT * FROM fields WHERE availability = 1"; // Show only available fields
-$result = $conn->query($query);
+    // Fetch fields from the database
+    $query = "SELECT * FROM fields WHERE availability = 1"; // Show only available fields
+    $result = $conn->query($query);
 
-if ($result === false) {
-    die("Database query failed: " . $conn->error);
-}
+    if ($result === false) {
+        die("Database query failed: " . $conn->error);
+    }
 
-$fields = [];
-while ($row = $result->fetch_assoc()) {
-    $fields[] = $row;
-}
+    $fields = [];
+    while ($row = $result->fetch_assoc()) {
+        $fields[] = $row;
+    }
 ?>
 
 <!DOCTYPE html>
