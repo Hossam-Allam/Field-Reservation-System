@@ -63,7 +63,13 @@
         $stmt->bind_param('iisssd', $customer_id, $field_id, $reservation_date, $start_time, $end_time, $total_fee);
 
         if ($stmt->execute()) {
-            echo '<script>alert("Reservation Successful");</script>';
+            echo '<script>
+                        alert("Reservation Successful");
+                        setTimeout(function() {
+                            window.location.href = "homepage.php";
+                        }, 3000); // 3 seconds delay
+                   </script>';
+            exit();
         } else {
             echo "Reservation failed: " . $conn->error;
         }
