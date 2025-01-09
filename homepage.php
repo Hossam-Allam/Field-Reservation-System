@@ -30,6 +30,7 @@ while ($row = $result->fetch_assoc()) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Field Reservation</title>
     <link rel="stylesheet" href="styles/homepage.css">
+    <link rel="stylesheet" href="styles/HFstyles.css">
 
 </head>
 <body>

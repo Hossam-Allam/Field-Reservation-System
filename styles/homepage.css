@@ -15,38 +15,7 @@ i{
     padding: 20px;
 
 }
-header {
-    background-color: #596D48;
-    padding: 10px 0;
-    text-align: center;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-}
-header img {
-    height: 50px;
-}
-header h1 {
-    margin: 0;
-    font-size: 1.5rem;
-}
-header nav a {
-    color: white;
-    text-decoration: none;
-    margin-left: 15px;
-}
-header nav a:hover {
-    text-decoration: underline;
-}
-footer {
-    background-color: #596D48;
-    padding: 10px 0;
-    text-align: center;
-    color: white;
-    margin-top: 20px;
-}
+
 .field-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(400px, 0.5fr));
