@@ -2,12 +2,13 @@
     session_start();
     require_once 'connect.php';
 
-    $user_email = $_SESSION['user_email']; 
+    $is_logged_in = isset($_SESSION['user_email']);
+    $user_email = $is_logged_in ? htmlspecialchars($_SESSION['user_email']) : null;
 
     
     $query = "SELECT customer_id FROM customers WHERE email = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('s', $user_email); // Use 's' for strings
+    $stmt->bind_param('s', $user_email); 
     $stmt->execute();
 
     $result = $stmt->get_result();
@@ -62,7 +63,7 @@
         $stmt->bind_param('iisssd', $customer_id, $field_id, $reservation_date, $start_time, $end_time, $total_fee);
 
         if ($stmt->execute()) {
-            echo "Reservation successful!";
+            echo '<script>alert("Reservation Successful");</script>';
         } else {
             echo "Reservation failed: " . $conn->error;
         }
@@ -74,12 +75,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <title>Reserve Field</title>
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/reserve.css">
+    <link rel="stylesheet" href="styles/HFstyles.css">
 </head>
 <body>
+
+    <?php include('header.php'); ?>
+
     <div class="container">
-        <h1>Reserve Field: <?php echo htmlspecialchars($field['type']); ?></h1>
+        <h1>Reservation for <span><?php echo htmlspecialchars($field['type']); ?> </span> Field </h1>
         <form action="reserve.php?field_id=<?php echo $field['field_id']; ?>" method="POST">
             <label for="reservation_date">Date:</label>
             <input type="date" id="reservation_date" name="reservation_date" required>
@@ -95,6 +101,8 @@
             <button type="submit">Submit Reservation</button>
         </form>
     </div>
+
+    <?php include('footer.php'); ?>
 </body>
 </html>
 
