@@ -121,7 +121,7 @@ $user_name = $is_logged_in ? htmlspecialchars($_SESSION['user']['name']) : null;
     <header>
         <div style="display: flex; align-items: center; gap: 15px;">
             <img src="images/logo.jpg" alt="Optiserve Logo" style="width: 80px; height: auto;">
-            <h1>Optiserve - Field Reservation</h1>
+            <h1>OptiSport</h1>
         </div>
         <nav>
             <?php if ($is_logged_in): ?>
@@ -132,7 +132,7 @@ $user_name = $is_logged_in ? htmlspecialchars($_SESSION['user']['name']) : null;
                 <a href="signin.php">Sign In</a>
                 <a href="signup.php">Sign Up</a>
             <?php endif; ?>
-        </nav>
+        </nav>  
     </header>
 
     <div class="container">

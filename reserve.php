@@ -42,9 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bindParam(':total_fee', $total_fee);
 
     if ($stmt->execute()) {
-        echo "Reservation successful!";
+        echo "<script>alert('Reservation successful!');</script>";
     } else {
-        echo "Reservation failed.";
+        echo "<script>alert('Reservation failed.');</script>";
     }
 }
 ?>
@@ -56,10 +56,106 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reserve Field</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #007bff;
+            padding: 10px 0;
+            text-align: center;
+            color: white;
+        }
+        footer {
+            background-color: #007bff;
+            padding: 10px 0;
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+        }
+        .field-details {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin: 20px 0;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .field-details img {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .field-info {
+            flex: 1;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        form input, form button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        form button {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        form button:hover {
+            background: #0056b3;
+        }
+    </style>
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+            <img src="images/logo.jpg" alt="Optiserve Logo" style="width: 80px; height: auto;">
+            <h1>Optiserve - Reserve Field</h1>
+        </div>
+        <p>Contact us at: <a href="mailto:info@optiserve.com" style="color: white;">info@optiserve.com</a></p>
+    </header>
+
+    <!-- Main Content -->
     <div class="container">
-        <h1>Reserve Field: <?php echo htmlspecialchars($field['type']); ?></h1>
+        <h2>Reserve Field: <?php echo htmlspecialchars($field['type']); ?></h2>
+
+        <!-- Field Details -->
+        <div class="field-details">
+            <img src="<?php echo htmlspecialchars($field['image_path']); ?>" alt="Field Image">
+            <div class="field-info">
+                <h3><?php echo htmlspecialchars($field['type']); ?></h3>
+                <p>Fees: <?php echo htmlspecialchars($field['fees']); ?> TL</p>
+                <p>Capacity: <?php echo htmlspecialchars($field['capacity']); ?> persons</p>
+            </div>
+        </div>
+
+        <!-- Reservation Form -->
         <form action="reserve.php?field_id=<?php echo $field['field_id']; ?>" method="POST">
             <label for="reservation_date">Date:</label>
             <input type="date" id="reservation_date" name="reservation_date" required>
@@ -75,5 +171,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit">Submit Reservation</button>
         </form>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Optiserve | <a href="mailto:info@optiserve.com" style="color: white;">info@optiserve.com</a></p>
+        <p>Bio: Optiserve is a leading provider of field reservation systems, ensuring seamless management of sports facilities.</p>
+    </footer>
 </body>
 </html>
