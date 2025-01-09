@@ -34,22 +34,8 @@ while ($row = $result->fetch_assoc()) {
 
 </head>
 <body>
-    <header>
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <img src="images/logo.jpg" alt="Optiserve Logo" style="width: 80px; height: auto; border-radius: 20px;">
-            <h1><i>Optiserve</i> - Field Reservation</h1>
-        </div>
-        <nav>
-            <?php if ($is_logged_in): ?>
-                <span>Welcome, <?php echo $user_email; ?></span>
-                <a href="profile.php">Profile</a>
-                <a href="logout.php">Sign Out</a>
-            <?php else: ?>
-                <a href="signin.php">Sign In</a>
-                <a href="signup.php">Sign Up</a>
-            <?php endif; ?>
-        </nav>
-    </header>
+
+    <?php include('header.php'); ?>
 
     <div class="container">
         <h2>Available Fields</h2>
@@ -70,10 +56,7 @@ while ($row = $result->fetch_assoc()) {
         <?php endif; ?>
     </div>
 
-    <footer>
-        <p>&copy; 2025 Optiserve | <a href="mailto:info@optiserve.com" style="color: white;">info@optiserve.com</a></p>
-        <p>Bio: Optiserve is a leading provider of field reservation systems, ensuring seamless management of sports facilities.</p>
-    </footer>
+    <?php include('footer.php'); ?>
 </body>
 </html>
 
