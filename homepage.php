@@ -1,5 +1,5 @@
 <?php
-// Start session to manage user login state
+
 session_start();
 
 // Database connection

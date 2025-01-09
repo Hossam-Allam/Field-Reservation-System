@@ -1,52 +1,72 @@
 <?php
-// Database connection
-include 'db_connection.php'; // Assuming you've created a separate DB connection file
+    session_start();
+    require_once 'connect.php';
 
-// Check if field_id is passed as a GET parameter
-if (isset($_GET['field_id'])) {
-    $field_id = $_GET['field_id'];
+    $user_email = $_SESSION['user_email']; 
+
     
-    // Fetch field details
-    $query = "SELECT * FROM fields WHERE field_id = :field_id";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':field_id', $field_id, PDO::PARAM_INT);
+    $query = "SELECT customer_id FROM customers WHERE email = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('s', $user_email); // Use 's' for strings
     $stmt->execute();
-    $field = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$field) {
-        die('Field not found.');
-    }
-} else {
-    die('No field selected.');
-}
+    $result = $stmt->get_result();
 
-// Handle form submission for reservation
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $customer_id = $_POST['customer_id'];  // Get customer ID from the session or form
-    $reservation_date = $_POST['reservation_date'];
-    $start_time = $_POST['start_time'];
-    $end_time = $_POST['end_time'];
-
-    // Calculate the total fee based on field and duration
-    $total_fee = $field['fees']; // You can implement dynamic fee calculation based on duration
-
-    // Insert reservation into the database
-    $query = "INSERT INTO reservations (customer_id, field_id, reservation_date, start_time, end_time, total_fee) 
-              VALUES (:customer_id, :field_id, :reservation_date, :start_time, :end_time, :total_fee)";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':customer_id', $customer_id);
-    $stmt->bindParam(':field_id', $field_id);
-    $stmt->bindParam(':reservation_date', $reservation_date);
-    $stmt->bindParam(':start_time', $start_time);
-    $stmt->bindParam(':end_time', $end_time);
-    $stmt->bindParam(':total_fee', $total_fee);
-
-    if ($stmt->execute()) {
-        echo "Reservation successful!";
+    if ($result) {
+        $row = $result->fetch_assoc();
+        $customer_id = $row['customer_id']; 
     } else {
-        echo "Reservation failed.";
+        echo "User not found.";
     }
-}
+
+    // Checking if field_id is passed as a GET parameter
+    if (isset($_GET['field_id'])) {
+        $field_id = $_GET['field_id'];
+
+        
+        $query = "SELECT * FROM fields WHERE field_id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param('i', $field_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $field = $result->fetch_assoc();
+
+        if (!$field) {
+            die('Field not found.');
+        }
+    } else {
+        die('No field selected.');
+    }
+
+    // Handle form submission for reservation
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $reservation_date = $_POST['reservation_date'];
+        $start_time = $_POST['start_time'];
+        $end_time = $_POST['end_time'];
+
+        // fee calculation
+        $start_time_obj = DateTime::createFromFormat('H:i', $_POST['start_time']);
+        $end_time_obj = DateTime::createFromFormat('H:i', $_POST['end_time']);
+
+        
+        $duration = $start_time_obj->diff($end_time_obj);
+        $duration_in_hours = $duration->h + ($duration->i / 60);
+
+        
+        $total_fee = $field['fees'] * $duration_in_hours;
+
+        
+        $query = "INSERT INTO reservations (customer_id, field_id, reservation_date, start_hour, end_hour, total_fee) 
+                VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param('iisssd', $customer_id, $field_id, $reservation_date, $start_time, $end_time, $total_fee);
+
+        if ($stmt->execute()) {
+            echo "Reservation successful!";
+        } else {
+            echo "Reservation failed: " . $conn->error;
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reserve Field</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
     <div class="container">
@@ -77,3 +97,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </body>
 </html>
+
+
