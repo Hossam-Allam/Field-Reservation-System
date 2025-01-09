@@ -4,6 +4,14 @@ html, body {
     flex-direction: column;
 }
 
+:root {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+i {
+    color: #FFF5E1;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -19,8 +27,61 @@ body {
 }
 
 span {
-    font-family: 'Roboto', sans-serif;
+   
     color: #596D48;
+    font-weight: bold;
+}
+
+svg {
+    height: 96.2px;
+    width: 96.2px;
+}
+
+.outer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+}
+
+#inner {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 50px;
+    border-radius: 20px;
+    background-color: rgb(226, 226, 225);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: "Lilita One", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 20px;
+    color: #596D48;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#inner:hover {
+    transform: scale(1.03); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+form {
+    margin-top: 50px;
+}
+
+.frm-btn {
+    margin-top: 40px;
+    margin-right: 165px;
+    float: right;
+    width: 150px;
+    padding: 15px;
+    border-radius: 20px;
+    background-color: #596D48;
+    color: white;
     font-weight: bolder;
 }
 
+input {
+    border-radius: 5px;
+    border: none;
+    padding: 3px;
+}
