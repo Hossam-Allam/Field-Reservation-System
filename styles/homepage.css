@@ -10,7 +10,7 @@ body {
     padding: 20px;
 }
 header {
-    background-color: #007bff;
+    background-color: #596D48;
     padding: 10px 0;
     text-align: center;
     color: white;
@@ -35,7 +35,7 @@ header nav a:hover {
     text-decoration: underline;
 }
 footer {
-    background-color: #007bff;
+    background-color: #596D48;
     padding: 10px 0;
     text-align: center;
     color: white;
@@ -64,7 +64,7 @@ footer {
 .reserve-btn {
     display: inline-block;
     padding: 10px 15px;
-    background: #007bff;
+    background: #596D48;
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
