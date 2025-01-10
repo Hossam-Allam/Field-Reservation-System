@@ -5,6 +5,9 @@
     $is_logged_in = isset($_SESSION['user_email']);
     $user_email = $is_logged_in ? htmlspecialchars($_SESSION['user_email']) : null;
 
+    if(!$is_logged_in) {
+        die('Login First');
+    }
     
     $query = "SELECT customer_id FROM customers WHERE email = ?";
     $stmt = $conn->prepare($query);

@@ -96,7 +96,7 @@
     <link rel="stylesheet" href="styles/HFstyles.css">
 </head>
 <body>
-    <?php include('hf/header.php'); ?>
+    <?php include('hf/staffH.php'); ?>
 
     <div class="container">
         <div class="profile-info">
