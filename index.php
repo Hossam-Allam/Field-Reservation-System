@@ -30,7 +30,7 @@
 
             <?php
                 session_start();
-                // Include the database connection
+                
                 require_once 'connect.php';
 
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
