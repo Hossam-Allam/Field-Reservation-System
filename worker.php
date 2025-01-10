@@ -96,7 +96,7 @@
     <link rel="stylesheet" href="styles/HFstyles.css">
 </head>
 <body>
-    <?php include('header.php'); ?>
+    <?php include('hf/header.php'); ?>
 
     <div class="container">
         <div class="profile-info">
@@ -141,6 +141,6 @@
 
     </div>
     
-    <?php include('footer.php'); ?>
+    <?php include('hf/footer.php'); ?>
 </body>
 </html>

@@ -35,7 +35,7 @@
 </head>
 <body>
 
-    <?php include('header.php'); ?>
+    <?php include('hf/header.php'); ?>
 
     <div class="container">
         <h2>Available Fields</h2>
@@ -56,7 +56,7 @@
         <?php endif; ?>
     </div>
 
-    <?php include('footer.php'); ?>
+    <?php include('hf/footer.php'); ?>
 </body>
 </html>
 

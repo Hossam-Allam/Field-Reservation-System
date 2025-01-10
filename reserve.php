@@ -119,7 +119,7 @@
 
     <?php 
         
-        include('header.php'); 
+        include('hf/header.php'); 
     ?>
 
     <div class="container">
@@ -153,7 +153,7 @@
         </form>
     </div>
 
-    <?php include('footer.php'); ?>
+    <?php include('hf/footer.php'); ?>
 
     <script>
         document.querySelector('form').addEventListener('submit', function(e) {
