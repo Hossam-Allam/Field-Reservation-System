@@ -4,11 +4,10 @@
 
 
 
-    if (!isset($_SESSION['user_email'])) {
-        die("You must be logged in to view this page.");
-    }
+    $is_logged_in = isset($_SESSION['user_email']);
+    $user_email = $is_logged_in ? htmlspecialchars($_SESSION['user_email']) : null;
 
-    $user_email = $_SESSION['user_email'];
+    
 
     try {
         // Fetch customer details
@@ -43,19 +42,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Profile</title>
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/profile.css">
+    <link rel="stylesheet" href="styles/HFstyles.css">
     <style>
-        .container { margin: auto; padding: 20px; max-width: 800px; }
-        .profile-info, .reservations { margin-bottom: 20px; }
-        .reservations .reservation { border: 1px solid #ddd; border-radius: 5px; padding: 10px; margin-bottom: 10px; }
-        .edit-btn { background: #007bff; color: #fff; padding: 5px 10px; border-radius: 5px; text-decoration: none; }
-        .edit-btn:hover { background: #0056b3; }
+        
     </style>
 </head>
 <body>
-    <header>
-        <h1>Welcome, <?php echo htmlspecialchars($customer['name']); ?>!</h1>
-    </header>
+    <?php include('header.php'); ?>
+
     <div class="container">
         <div class="profile-info">
             <h2>Personal Details</h2>
@@ -80,8 +75,7 @@
             <?php endif; ?>
         </div>
     </div>
-    <footer>
-        <p>&copy; 2025 Optiserve | Contact: <a href="mailto:info@optiserve.com">info@optiserve.com</a></p>
-    </footer>
+    
+    <?php include('footer.php'); ?>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <header>
     <div style="display: flex; align-items: center; gap: 15px;">
         <img src="images/logo.jpg" alt="Optiserve Logo" style="width: 80px; height: auto; border-radius: 20px;">
-        <h1><i>Optiserve</i> - Field Reservation</h1>
+        <h1><i id="opti">Optiserve</i> - Field Reservation</h1>
     </div>
     <nav>
         <?php
