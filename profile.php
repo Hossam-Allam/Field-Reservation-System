@@ -131,7 +131,7 @@
                         <div class="reservation">
                             <p><strong>Field:</strong> <?php echo htmlspecialchars($reservation['type']); ?></p>
                             <p><strong>Date:</strong> <?php echo htmlspecialchars($reservation['reservation_date']); ?></p>
-                            <p><strong>Time:</strong> <?php echo htmlspecialchars($reservation['start_hour']); ?> - <?php echo htmlspecialchars($reservation['end_time']); ?></p>
+                            <p><strong>Time:</strong> <?php echo htmlspecialchars($reservation['start_hour']); ?> - <?php echo htmlspecialchars($reservation['end_hour']); ?></p>
                             <p><strong>Fees:</strong> <?php echo htmlspecialchars($reservation['total_fee']); ?> TL</p>
                         </div>
                     <?php endforeach; ?>
