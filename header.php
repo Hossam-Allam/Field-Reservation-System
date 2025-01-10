@@ -6,14 +6,27 @@
     <nav>
         <?php
             session_start();
-            if (isset($user_email) && $is_logged_in): 
+
+            // Handle logout
+            if (isset($_GET['logout'])) {
+                session_unset();    
+                session_destroy();  
+                header("Location: index.php"); 
+                exit();
+            }
+
+            $is_logged_in = isset($_SESSION['user_email']);
+            $user_email = $is_logged_in ? htmlspecialchars($_SESSION['user_email']) : null;
+
+            if ($is_logged_in): 
         ?>
-        <span id="white">Welcome, <?php echo htmlspecialchars($user_email); ?></span>
+            <span id="white">Welcome, <?php echo $user_email; ?></span>
             <a href="profile.php">Profile</a>
-            <a href="index.php">Sign Out</a>
+            <a href="?logout=true">Sign Out</a>
         <?php else: ?>
             <a href="index.php">Sign In</a>
             <a href="index.php">Sign Up</a>
         <?php endif; ?>
     </nav>
 </header>
+
