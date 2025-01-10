@@ -45,18 +45,42 @@
         $start_time = $_POST['start_time'];
         $end_time = $_POST['end_time'];
 
-        // fee calculation
+        // fee calculation & time validity checks
         $start_time_obj = DateTime::createFromFormat('H:i', $_POST['start_time']);
         $end_time_obj = DateTime::createFromFormat('H:i', $_POST['end_time']);
 
         
+        
         $duration = $start_time_obj->diff($end_time_obj);
         $duration_in_hours = $duration->h + ($duration->i / 60);
+        
+        // in case js is disabled
+        if ($end_time_obj <= $start_time_obj || $duration_in_hours < 1) {
+            echo '<script>alert("End time must be after start time and at least one hour later."); window.history.back();</script>';
+            exit();
+        }
+    
 
         
         $total_fee = $field['fees'] * $duration_in_hours;
 
-        
+
+        $query = "SELECT * FROM reservations 
+              WHERE field_id = ? 
+              AND reservation_date = ?
+              AND ((start_hour < ? AND end_hour > ?) OR (start_hour < ? AND end_hour > ?))";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param('isssss', $field_id, $reservation_date, $end_time, $start_time, $start_time, $end_time);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            echo '<script>alert("This field is already reserved during the selected time."); window.history.back();</script>';
+            exit();
+        }
+
+
+        // passed checks
         $query = "INSERT INTO reservations (customer_id, field_id, reservation_date, start_hour, end_hour, total_fee) 
                 VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
@@ -130,6 +154,26 @@
     </div>
 
     <?php include('footer.php'); ?>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const startTime = document.getElementById('start_time').value;
+            const endTime = document.getElementById('end_time').value;
+
+            if (startTime && endTime) {
+                const start = new Date(`1970-01-01T${startTime}:00`);
+                const end = new Date(`1970-01-01T${endTime}:00`);
+                const diffInMs = end - start;
+                const diffInHours = diffInMs / (1000 * 60 * 60);
+
+                if (end <= start || diffInHours < 1) {
+                    alert("End time must be after start time and at least one hour later.");
+                    e.preventDefault();  
+                }
+            }
+        });
+</script>
+
 </body>
 </html>
 
