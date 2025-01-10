@@ -10,10 +10,10 @@
         ?>
         <span id="white">Welcome, <?php echo htmlspecialchars($user_email); ?></span>
             <a href="profile.php">Profile</a>
-            <a href="logout.php">Sign Out</a>
+            <a href="index.php">Sign Out</a>
         <?php else: ?>
-            <a href="signin.php">Sign In</a>
-            <a href="signup.php">Sign Up</a>
+            <a href="index.php">Sign In</a>
+            <a href="index.php">Sign Up</a>
         <?php endif; ?>
     </nav>
 </header>
