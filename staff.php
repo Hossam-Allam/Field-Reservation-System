@@ -30,7 +30,6 @@
 
             <?php
                 session_start();
-                
                 require_once 'connect.php';
 
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -42,18 +41,28 @@
                         $password = $_POST['password'];
 
                         if (!empty($email) && !empty($password)) {
-                            $stmt = $conn->prepare("SELECT password FROM staff WHERE email = ?");
+                            $stmt = $conn->prepare("SELECT password, role FROM staff WHERE email = ?");
                             $stmt->bind_param("s", $email);
                             $stmt->execute();
                             $stmt->store_result();
 
                             if ($stmt->num_rows > 0) {
-                                $stmt->bind_result($hashedPassword);
+                                $stmt->bind_result($hashedPassword, $role);
                                 $stmt->fetch();
 
+                                // Verify password
                                 if (password_verify($password, $hashedPassword)) {
-                                    $_SESSION['staff_email'] = $email;
-                                    header("Location: worker.php");
+                                    
+                                    
+                                    // Redirect based on role
+                                    if ($role === 'admin') {
+                                        $_SESSION['admin_email'] = $email;
+                                        $_SESSION['staff_email'] = $email;
+                                        header("Location: admin.php");
+                                    } else {
+                                        $_SESSION['staff_email'] = $email;
+                                        header("Location: worker.php");
+                                    }
                                     exit();
                                 } else {
                                     echo '<script>alert("Invalid credentials. Please try again.");</script>';
@@ -67,11 +76,9 @@
                             echo '<script>alert("Both fields are required.");</script>';
                         }
                     }
-
-                    
                 }
-
             ?>
+
 
             <div id="form-container">
             <form id="login-form" action="" method="post">
