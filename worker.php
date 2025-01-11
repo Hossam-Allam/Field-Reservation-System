@@ -62,7 +62,7 @@
                 $stmt->bind_param($types, ...$params);
 
                 if ($stmt->execute()) {
-                    echo "<script>alert('Profile updated successfully!'); window.location.href = 'profile.php';</script>";
+                    echo "<script>alert('Profile updated successfully!'); window.location.href = 'worker.php';</script>";
                 } else {
                     echo "<script>alert('Error updating profile.');</script>";
                 }
