@@ -8,8 +8,7 @@ A PHP-based web application for managing field reservations. Users can register,
 
 - User registration and authentication
 - Field reservation system
-- Admin panel for managing reservations (optional)
-- Responsive design (if applicable)
+- Admin panel for managing reservations
 
 ---
 
@@ -17,15 +16,6 @@ A PHP-based web application for managing field reservations. Users can register,
 
 - **Backend:** PHP
 - **Database:** MySQL (phpMyAdmin)
-- **Frontend:** HTML, CSS, JavaScript (if used)
+- **Frontend:** HTML, CSS, JavaScript (minimally)
 
 ---
-
-## 📦 Installation
-
-1. **Clone the Repository:**
-
-   ```bash
-   git clone https://github.com/your-username/field-reservation.git
-   cd field-reservation
-   ```
