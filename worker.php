@@ -51,11 +51,11 @@
 
             // only run updates if sthg changes
             if (!empty($updates)) {
-                $query = "UPDATE customers SET " . implode(", ", $updates) . " WHERE customer_ID = ?";
+                $query = "UPDATE staff SET " . implode(", ", $updates) . " WHERE staff_id = ?";
                 $stmt = $conn->prepare($query);
 
                 
-                $params[] = $customer['staff_id'];
+                $params[] = $staff['staff_id'];
                 $types .= 'i';  
 
                 
