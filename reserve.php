@@ -45,6 +45,11 @@
     // Handle form submission for reservation
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $reservation_date = $_POST['reservation_date'];
+        $current_date = date('Y-m-d');
+        if ($reservation_date < $current_date) {
+            echo '<script>alert("You cannot reserve a date in the past."); window.history.back();</script>';
+            exit();
+        }
         $start_time = $_POST['start_time'];
         $end_time = $_POST['end_time'];
 
